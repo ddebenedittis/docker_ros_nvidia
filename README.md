@@ -18,9 +18,9 @@ Install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-nati
 
 Build the docker image (-r option to update the underlying images):
 ```shell
-./build.sh [-r]
+./build.bash [-r]
 ```
-The docker base image (and ROS version) can be changed by modifying the `BASE_IMAGE` and `BASE_TAG` bash variables. To change the image name, modify `IMAGE_NAME` in `build.sh` in `run.bash`.
+The docker base image and the ROS version can be changed by modifying the `BASE_IMAGE` and `BASE_TAG` bash variables. To change the image name, modify `IMAGE_NAME` in `build.bash` in `run.bash`.
 
 Run the container:
 ```shell
