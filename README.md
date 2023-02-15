@@ -4,7 +4,7 @@
 
 Dockerfiles to build images that have ROS (1 or 2) with NVIDIA support and with GUI support (e.g. Gazebo and RViz).
 
-The `build.sh` and the `run.bash` files are used to automatically build and run the image.
+The `build.bash` and the `run.bash` files are used to automatically build and run the image.
 
 
 ## Preliminaries
@@ -20,14 +20,14 @@ Build the docker image (-r option to update the underlying images):
 ```shell
 ./build.sh [-r]
 ```
-The docker base image (and ROS version) can be changed by modifying the `BASE_IMAGE` and `BASE_TAG` bash variables. To change the image name, modify `IMAGE_NAME` in `build.sh` in `run.sh`.
+The docker base image (and ROS version) can be changed by modifying the `BASE_IMAGE` and `BASE_TAG` bash variables. To change the image name, modify `IMAGE_NAME` in `build.sh` in `run.bash`.
 
 Run the container:
 ```shell
 ./run.bash
 ```
 
-The workspace directory should be the folder containing `run.bash` and `build.sh`. It is mounted in the Docker container on startup.
+The workspace directory should be the folder containing `run.bash` and `build.bash`. It is mounted in the Docker container on startup.
 
 Build the workspace inside the Docker container with colcon or catkin to avoid permission problems. The workspace's `setup.bash` is automatically sourced when the container is opened; thus it will fail the first time the container is run.
 
