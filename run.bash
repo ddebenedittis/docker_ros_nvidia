@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Create /tmp/.docker.xauth if it does not already exist.
 XAUTH=/tmp/.docker.xauth
 if [ ! -f $XAUTH ]
@@ -7,7 +9,7 @@ then
 fi
 
 # TODO: Change image name if you wish (here and in build.sh).
-IMAGE_NAME=ros1_image_name
+IMAGE_NAME=ros_image_name
 
 xhost +
 docker run \
@@ -31,9 +33,17 @@ docker run \
     --env="HISTFILE=/home/.bash_history" \
     --env="HISTFILESIZE=$HISTFILESIZE" \
     -v ~/.bash_history:/home/.bash_history \
+    `# Audio support in Docker.` \
+    --device /dev/snd \
+    -e PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native \
+    -v ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native \
+    --group-add $(getent group audio | cut -d: -f3) \
     `# Enable SharedMemory between host and container.` \
     `# https://answers.ros.org/question/370595/ros2-foxy-nodes-cant-communicate-through-docker-container-border/` \
     -v /dev/shm:/dev/shm \
-    `# TODO: Change image name if you wish (here and in build.sh).` \
+    `# Mount folders useful for VS Code.` \
+    -v /home/$USER/.vscode:/home/$USER/.vscode \
+    -v /home/$USER/.vscode-server:/home/$USER/.vscode-server \
+    -v /home/$USER/.config/Code:/home/$USER/.config/Code \
     ${IMAGE_NAME} \
     bash
