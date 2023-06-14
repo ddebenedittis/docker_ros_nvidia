@@ -6,6 +6,8 @@ FROM ${BASE_IMAGE}:${BASE_TAG}
 
 ARG ROS_NUMBER=1
 
+# ================================== Nvidia ================================== #
+
 # Use the NVIDIA graphics card.
 ENV NVARCH x86_64
 
@@ -39,7 +41,9 @@ ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+ENV NVIDIA_DRIVER_CAPABILITIES compute,graphics,utility
+
+# ============================================================================ #
 
 # Prevent bash to ask for user input which may break the building process
 ENV DEBIAN_FRONTEND=noninteractive
@@ -80,10 +84,17 @@ USER ${USER}
 # Change HOME environment variable
 ENV HOME /home/${USER}
 
+# Install the required dependencies with rosdep.
+RUN --mount=type=cache,sharing=locked,target=/var/cache/apt --mount=type=cache,sharing=locked,target=/var/lib/apt \
+    --mount=type=bind,source=./src,target=/home/${USER}/catkin_ws/src,rw \
+    cd /home/${USER}/catkin_ws \
+ && sudo apt-get update \
+ && rosdep update \
+ && rosdep install --from-paths src --ignore-src -r -y
+
 # Set up environment
 COPY .config/update_bashrc_ros_1 /sbin/update_bashrc_ros_1
 COPY .config/update_bashrc_ros_2 /sbin/update_bashrc_ros_2
-
 
 RUN if [ "${ROS_NUMBER}" = "1" ] ; then \
         sudo chmod +x /sbin/update_bashrc_ros_1 ; sudo chown ${USER} /sbin/update_bashrc_ros_1 \
