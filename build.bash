@@ -11,7 +11,7 @@ IMAGE_NAME=ros_image_name
 
 # =============================== Preliminaries ============================== #
 
-mkdir -p build log
+mkdir -p build log src
 if [[ $ROS_NUMBER == 1 ]]; then
     mkdir -p devel
 elif [[ $ROS_NUMBER == 2 ]]; then
