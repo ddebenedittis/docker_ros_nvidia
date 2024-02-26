@@ -62,8 +62,8 @@ shift $((OPTIND-1)) # remove parsed options and args from $@ list
 
 docker pull $BASE_IMAGE:$BASE_TAG
 
-MYUID="$(id -u $USER)"
-MYGID="$(id -g $USER)"
+UID="$(id -u $USER)"
+GID="$(id -g $USER)"
 
 if [ "$REBUILD" -eq 1 ]; then
     cache="--no-cache"
@@ -76,8 +76,8 @@ docker build \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
     --build-arg BASE_TAG=$BASE_TAG \
     --build-arg ROS_NUMBER=$ROS_NUMBER \
-    --build-arg MYUID=${UID} \
-    --build-arg MYGID=${GID} \
+    --build-arg UID=${UID} \
+    --build-arg GID=${GID} \
     --build-arg USER=${USER} \
     --build-arg "PWDR=$PWD" \
     -t $IMAGE_NAME .
