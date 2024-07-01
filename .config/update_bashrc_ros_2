@@ -2,4 +2,6 @@
 echo "" >> ~/.bashrc
 echo "## ROS 2" >> ~/.bashrc
 echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
-echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> ~/.bashrc
+if [[ $(echo "$ubuntu_version < 24.04" | bc -l) -eq 1 ]]; then
+    echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> ~/.bashrc
+fi

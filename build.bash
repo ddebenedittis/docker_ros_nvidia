@@ -75,8 +75,8 @@ docker build \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
     --build-arg BASE_TAG=$BASE_TAG \
     --build-arg ROS_NUMBER=$ROS_NUMBER \
-    --build-arg UID=${UID} \
-    --build-arg GID=${GID} \
+    --build-arg MYUID=${UID} \
+    --build-arg MYGID=${GID} \
     --build-arg USER=${USER} \
     --build-arg "PWDR=$PWD" \
     -t $IMAGE_NAME .

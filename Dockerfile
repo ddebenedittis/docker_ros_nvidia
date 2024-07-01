@@ -66,16 +66,26 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt --mount=type=cache,s
         python3-osrf-pycommon ; \
     fi
 
-# Create the same user as the host itself. (By default Docker creates the container as root, which is not recommended.)
-ARG UID=1000
-ARG GID=1000
+ARG MYUID=1000
+ARG MYGID=1000
 ARG USER=ros
 ARG PWDR=/
-RUN addgroup --gid ${GID} ${USER} \
- && adduser --gecos "ROS User" --disabled-password --uid ${UID} --gid ${GID} ${USER} \
- && usermod -a -G dialout ${USER} \
- && echo ${USER}" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/99_aptget \
- && chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget
+
+RUN OLD_USER=$(awk -v uid="$MYUID" -F ':' '$3==uid {print $1}' /etc/passwd) \
+    && if [ -z "${OLD_USER}" ]; then \
+        # There is no existing UID equal to MYUID.
+        # Create the same user as the host itself. (By default Docker creates the container as root, which is not recommended.)
+        addgroup --gid ${MYGID} ${USER} \
+        && adduser --gecos "ROS User" --disabled-password --uid ${MYUID} --gid ${MYGID} ${USER} \
+        && usermod -a -G dialout ${USER} \
+        && echo ${USER}" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/99_aptget \
+        && chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget ; \
+    else \
+        usermod -l ${USER} ${OLD_USER} \
+        && sudo usermod -d /home/${USER} -m ${USER} \
+        && echo ${USER}" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/99_aptget \
+        && chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget ; \
+    fi
 
 # Choose to run as user
 ENV USER ${USER}
