@@ -62,7 +62,6 @@ shift $((OPTIND-1)) # remove parsed options and args from $@ list
 
 docker pull $BASE_IMAGE:$BASE_TAG
 
-UID="$(id -u $USER)"
 GID="$(id -g $USER)"
 
 if [ "$REBUILD" -eq 1 ]; then
