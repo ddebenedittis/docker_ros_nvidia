@@ -45,5 +45,8 @@ docker run \
     -v /home/$USER/.vscode:/home/$USER/.vscode \
     -v /home/$USER/.vscode-server:/home/$USER/.vscode-server \
     -v /home/$USER/.config/Code:/home/$USER/.config/Code \
+    `# Matplotlib environment variable.` \
+    --env="MPLCONFIGDIR=/home/$USER/.matplotlib" \
+    --env="XDG_RUNTIME_DIR=/tmp/runtime-$USER" \
     ${IMAGE_NAME} \
     bash
