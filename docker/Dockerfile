@@ -15,7 +15,7 @@ ENV NVIDIA_REQUIRE_CUDA="cuda>=12.1 brand=tesla,driver>=450,driver<451 brand=tes
 ENV NV_CUDA_CUDART_VERSION=12.1.105-1
 ENV NV_CUDA_COMPAT_PACKAGE=cuda-compat-12-1
 
-LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
+LABEL maintainer="NVIDIA CORPORATION <cudatools@nvidia.com>"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gnupg2 curl ca-certificates && \
@@ -103,8 +103,8 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt --mount=type=cache,s
  && rosdep install --from-paths src --ignore-src -r -y
 
 # Set up environment
-COPY .config/update_bashrc_ros_1 /sbin/update_bashrc_ros_1
-COPY .config/update_bashrc_ros_2 /sbin/update_bashrc_ros_2
+COPY ./docker/.config/update_bashrc_ros_1 /sbin/update_bashrc_ros_1
+COPY ./docker/.config/update_bashrc_ros_2 /sbin/update_bashrc_ros_2
 
 RUN if [ "${ROS_NUMBER}" = "1" ] ; then \
         sudo chmod +x /sbin/update_bashrc_ros_1 ; sudo chown ${USER} /sbin/update_bashrc_ros_1 \
@@ -119,7 +119,7 @@ RUN if [ "${ROS_NUMBER}" = "1" ] ; then \
     fi
 
 # Change entrypoint to source ~/.bashrc and start in ~
-COPY .config/entrypoint.sh /ros_entrypoint.sh
+COPY ./docker/.config/entrypoint.sh /ros_entrypoint.sh
 RUN sudo chmod +x /ros_entrypoint.sh ; sudo chown ${USER} /ros_entrypoint.sh \
  && echo "cd "${PWDR} >> /ros_entrypoint.sh \
  && echo 'exec bash -i -c $@' >> /ros_entrypoint.sh \

@@ -19,12 +19,12 @@ The docker base image and the ROS version can be changed by modifying the `BASE_
 
 Build the docker image (use the `-r` option to update the underlying images):
 ```shell
-./build.bash [-r]
+./docker/build.bash [-r]
 ```
 
 Run the container:
 ```shell
-./run.bash
+./docker/run.bash
 ```
 
 The workspace directory should be the folder containing `run.bash` and `build.bash`. It is mounted in the Docker container on startup.

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Navigate to the root directory of the project.
+cd "$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")"
+
 # ================================= Edit Here ================================ #
 
 # TODO: Change these values to use different versions of ROS or different base images. The rest of the script should be left unchanged.
@@ -79,4 +82,5 @@ docker build \
     --build-arg MYGID=${GID} \
     --build-arg USER=${USER} \
     --build-arg "PWDR=$PWD" \
-    -t $IMAGE_NAME .
+    -t $IMAGE_NAME \
+    -f docker/Dockerfile .
