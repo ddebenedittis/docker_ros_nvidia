@@ -55,6 +55,11 @@ To use VS Code with Docker, you can use the Dev Containers extension to attach V
   - Restart Docker with `sudo systemctl restart docker`.
 
 
+## Devcontainer
+
+To use devcontainers, first create the `src` folder.
+
+
 ## Author
 
 [Davide De Benedittis](https://github.com/ddebenedittis)
