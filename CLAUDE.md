@@ -13,6 +13,7 @@ Docker ROS NVIDIA provides Dockerfiles and scripts to build Docker images with R
 - `docker/.config/update_bashrc_ros_1` — ROS 1 shell initialization
 - `docker/.config/update_bashrc_ros_2` — ROS 2 shell initialization
 - `.devcontainer/devcontainer.json` — VS Code Dev Container config (defaults to ROS 2 Humble)
+- `Makefile` — Convenience targets wrapping bash scripts and docker compose commands
 
 ## Build and Run
 
@@ -26,6 +27,20 @@ Docker ROS NVIDIA provides Dockerfiles and scripts to build Docker images with R
 # Run the container
 ./docker/run.bash
 ```
+
+## Makefile
+
+The root `Makefile` provides shorthand targets for both workflows:
+
+| Target    | Command                                       |
+|-----------|-----------------------------------------------|
+| `build`   | `./docker/build.bash`                         |
+| `rebuild` | `./docker/build.bash -r`                      |
+| `run`     | `./docker/run.bash`                           |
+| `setup`   | `./docker/setup_compose.bash`                 |
+| `start`   | `docker compose -f docker/docker-compose.yml up -d` |
+| `attach`  | `docker compose -f docker/docker-compose.yml exec ros bash` |
+| `stop`    | `docker compose -f docker/docker-compose.yml down` |
 
 ## Architecture Notes
 

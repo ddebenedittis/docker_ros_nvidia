@@ -29,7 +29,36 @@ Install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-nati
 
 ### Makefile
 
-TODO.
+Run `make help` to see all available targets:
+
+```
+Usage: make <target>
+
+Bash script targets:
+  build           Build the Docker image (via build.bash)
+  rebuild         Build the Docker image without cache
+  run             Run the container (via run.bash)
+
+Docker Compose targets:
+  setup           One-time setup (generates .env, configures X11)
+  start           Start the container in detached mode
+  attach          Attach a shell to the running container
+  stop            Stop and remove compose services
+```
+
+**Bash script workflow:**
+```shell
+make build      # Build the image
+make run        # Run the container
+```
+
+**Docker Compose workflow:**
+```shell
+make setup      # One-time setup
+make start      # Start in background
+make attach     # Open a shell in the running container
+make stop       # Tear down
+```
 
 ### Bash Scripts
 
