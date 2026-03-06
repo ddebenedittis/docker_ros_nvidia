@@ -26,6 +26,13 @@ Install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-nati
 
 
 ## Usage
+
+### Makefile
+
+TODO.
+
+### Bash Scripts
+
 The docker base image and the ROS version can be changed by modifying the `BASE_IMAGE`, `BASE_TAG`, and `ROS_NUMBER` bash variables in `build.bash`. To change the image name, modify `IMAGE_NAME` both in `build.bash` and `run.bash`.
 
 Build the docker image (use the `-r` option to update the underlying images):
@@ -45,6 +52,32 @@ Build the workspace inside the Docker container with colcon or catkin to avoid p
 Take a look at https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ before modifying the Dockerfile according to your needs.
 
 To use VS Code with Docker, you can use the Dev Containers extension to attach VS Code to a running container. For having autocomplete, linting, etc. take a look at https://github.com/athackst/vscode_ros2_workspace and in particular to `c_cpp_properties.json` and `settings.json` in `.vscode`.
+
+
+### Docker Compose
+
+As an alternative to `build.bash` and `run.bash`, you can use Docker Compose with `docker-compose.yml` and `setup_compose.bash` (both in the `docker/` directory).
+
+First, edit the configuration variables at the top of `setup_compose.bash` to match your desired setup:
+- `BASE_IMAGE` — base Docker image (default: `osrf/ros`)
+- `BASE_TAG` — image tag, must be consistent with `ROS_NUMBER` (e.g. `humble-desktop` with `ROS_NUMBER=2`)
+- `ROS_NUMBER` — `1` for ROS 1, `2` for ROS 2
+- `IMAGE_NAME` — name for the built image
+
+Then run the setup script (one-time). It generates the `.env` file, configures X11 authentication, and creates the workspace directories:
+```shell
+./docker/setup_compose.bash
+```
+
+Build the image:
+```shell
+docker compose -f docker/docker-compose.yml build
+```
+
+Run the container:
+```shell
+docker compose -f docker/docker-compose.yml run --rm ros
+```
 
 
 ## Troubleshooting

@@ -1,0 +1,49 @@
+services:
+  ros:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        BASE_IMAGE: ${BASE_IMAGE:-osrf/ros}
+        BASE_TAG: ${BASE_TAG:-foxy-desktop}
+        ROS_NUMBER: ${ROS_NUMBER:-2}
+        MYUID: ${HOST_UID}
+        MYGID: ${HOST_GID}
+        USER: ${USER}
+        PWDR: ${PWD}
+    image: ${IMAGE_NAME:-ros_image_name}
+    network_mode: host
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=${XAUTH}
+      - HISTFILE=/home/.bash_history
+      - HISTFILESIZE=${HISTFILESIZE}
+      - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+      - MPLCONFIGDIR=/home/${USER}/.matplotlib
+      - XDG_RUNTIME_DIR=/tmp/runtime-${USER}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTH}:${XAUTH}
+      - /dev/dri:/dev/dri
+      - ${PWD}:${PWD}
+      - ~/.bash_history:/home/.bash_history
+      - ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native
+      - /dev/shm:/dev/shm
+      - ~/.vscode:/home/${USER}/.vscode
+      - ~/.vscode-server:/home/${USER}/.vscode-server
+      - ~/.config/Code:/home/${USER}/.config/Code
+    devices:
+      - /dev/snd:/dev/snd
+    group_add:
+      - ${AUDIO_GID}
+    command: bash

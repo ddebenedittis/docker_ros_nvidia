@@ -1,0 +1,5 @@
+.env
+build/
+log/
+install/
+devel/
