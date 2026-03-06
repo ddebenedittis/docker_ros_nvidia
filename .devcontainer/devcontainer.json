@@ -6,8 +6,8 @@
             "BASE_IMAGE": "osrf/ros",
             "BASE_TAG": "humble-desktop",
             "ROS_NUMBER": "2",
-            "MYUID": "${1000}",
-            "MYGID": "${1000}",
+            "MYUID": "1000",
+            "MYGID": "1000",
             "USER": "${localEnv:USER}",
             "PWDR": "${localEnv:PWD}"
         }
@@ -15,7 +15,6 @@
 
     "runArgs": [
         "--net=host",
-        "--rm",
         "--gpus=all"
     ],
 
@@ -30,13 +29,16 @@
 
     "mounts": [
         {"source": "/tmp/.X11-unix", "target": "/tmp/.X11-unix", "type": "bind"},
-        // {"source": "${localEnv:$XAUTHORITY}", "target": "${localEnv:$XAUTHORITY}", "type": "bind"},
+        // {"source": "${localEnv:XAUTHORITY}", "target": "${localEnv:XAUTHORITY}", "type": "bind"},
         {"source": "/dev/dri", "target": "/dev/dri", "type": "bind"},
         {"source": "${localEnv:PWD}", "target": "${localEnv:PWD}", "type": "bind"},
         {"source": "${localEnv:HOME}/.bash_history", "target": "/home/.bash_history", "type": "bind"},
         {"source": "${localEnv:XDG_RUNTIME_DIR}/pulse/native", "target": "${localEnv:XDG_RUNTIME_DIR}/pulse/native", "type": "bind"},
         {"source": "/dev/shm", "target": "/dev/shm", "type": "bind"}
     ],
+
+    "remoteUser": "${localEnv:USER}",
+    "workspaceFolder": "${localEnv:PWD}",
 
     "customizations": {
         "vscode": {
